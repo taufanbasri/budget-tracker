@@ -1,6 +1,6 @@
 'use server'
 
-import { UpdateUserCurrencySchema } from "@/app/schema/userSettings"
+import { UpdateUserCurrencySchema } from "@/schema/userSettings"
 import prisma from "@/lib/prisma"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
