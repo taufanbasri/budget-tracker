@@ -18,13 +18,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { CreateCategory } from "../_actions/categories"
 import { Category } from "@prisma/client"
 import { toast } from "sonner"
+import { useTheme } from "next-themes"
 
 type Props = {
     type: TransactionType
+    successCallback: (category: Category) => void
 }
 
-function CreateCategoryDialog({ type }: Props) {
+function CreateCategoryDialog({ type, successCallback }: Props) {
     const [open, setOpen] = useState(false)
+    const [popoverOpen, setPopoverOpen] = useState(false)
     const form = useForm<CreateCategorySchemaType>({
         resolver: zodResolver(CreateCategorySchema),
         defaultValues: {
@@ -33,6 +36,7 @@ function CreateCategoryDialog({ type }: Props) {
     })
 
     const queryClient = useQueryClient()
+    const theme = useTheme()
 
     const { mutate, isPending } = useMutation({
         mutationFn: CreateCategory,
@@ -47,11 +51,13 @@ function CreateCategoryDialog({ type }: Props) {
                 id: 'create-category'
             })
 
+            successCallback(data)
+
             await queryClient.invalidateQueries({
                 queryKey: ['categories']
             })
 
-            setOpen(!open)
+            setOpen(prev => !prev)
         },
         onError: () => {
             toast.error('Something went wrong!', {
@@ -102,10 +108,10 @@ function CreateCategoryDialog({ type }: Props) {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input defaultValue={""} {...field} />
+                                        <Input placeholder="Category" {...field} />
                                     </FormControl>
                                     <FormDescription>
-                                        Category name (required)
+                                        This is how your category will appear in the app
                                     </FormDescription>
                                 </FormItem>
                             )}
@@ -117,7 +123,7 @@ function CreateCategoryDialog({ type }: Props) {
                                 <FormItem>
                                     <FormLabel>Icon</FormLabel>
                                     <FormControl>
-                                        <Popover>
+                                        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
                                             <PopoverTrigger asChild>
                                                 <Button variant={'outline'} className="h-[100px] w-full">
                                                     {form.watch('icon') ? (
@@ -137,9 +143,13 @@ function CreateCategoryDialog({ type }: Props) {
                                             </PopoverTrigger>
 
                                             <PopoverContent className="w-full">
-                                                <Picker data={data} onEmojiSelect={(emoji: { native: string }) => {
-                                                    field.onChange(emoji.native)
-                                                }} />
+                                                <Picker
+                                                    data={data}
+                                                    theme={theme.resolvedTheme}
+                                                    onEmojiSelect={(emoji: { native: string }) => {
+                                                        field.onChange(emoji.native)
+                                                        setPopoverOpen(!popoverOpen)
+                                                    }} />
                                             </PopoverContent>
                                         </Popover>
                                     </FormControl>
