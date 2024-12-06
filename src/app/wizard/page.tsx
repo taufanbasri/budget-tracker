@@ -15,7 +15,7 @@ async function WizardPage() {
     }
 
     return (
-        <div className='container flex max-w-2xl flex-col items-center justify-between gap-4 px-8 md:px-0'>
+        <div className='container flex max-w-2xl flex-col items-center justify-between gap-4'>
             <div>
                 <h1 className="text-center text-3xl">
                     Welcome, <span className='ml-2 font-bold'>{user.firstName}! 👋</span>
