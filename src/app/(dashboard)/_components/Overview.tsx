@@ -6,6 +6,7 @@ import { UserSettings } from '@prisma/client'
 import { differenceInDays, startOfMonth } from 'date-fns'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
+import StatsCards from './StatsCards'
 
 type Props = {
     userSettings: UserSettings
@@ -41,6 +42,14 @@ function Overview({ userSettings }: Props) {
                         }}
                     />
                 </div>
+            </div>
+
+            <div className="container flex w-full flex-col gap-0">
+                <StatsCards
+                    userSettings={userSettings}
+                    from={dateRange.from}
+                    to={dateRange.to}
+                />
             </div>
         </>
     )

@@ -33,7 +33,7 @@ model Transaction {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  amount      BigInt
+  amount      Int
   description String
   date        DateTime
   userId      String
@@ -48,8 +48,8 @@ model MonthHistory {
   day     Int
   month   Int
   year    Int
-  income  BigInt
-  expense BigInt
+  income  Int
+  expense Int
 
   @@id([day, month, year, userId])
 }
@@ -58,8 +58,8 @@ model YearHistory {
   userId  String
   month   Int
   year    Int
-  income  BigInt
-  expense BigInt
+  income  Int
+  expense Int
 
   @@id([month, year, userId])
 }
