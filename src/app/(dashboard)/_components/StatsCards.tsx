@@ -31,7 +31,7 @@ function StatsCards({ userSettings, from, to }: Props) {
 
     return (
         <div className='relative flex w-full flex-wrap gap-2 md:flex-nowrap'>
-            <SkeletonWrapper isLoading={statsQuery.isLoading}>
+            <SkeletonWrapper isLoading={statsQuery.isFetching}>
                 <StatCard
                     formatter={formatter}
                     value={income}
@@ -41,7 +41,7 @@ function StatsCards({ userSettings, from, to }: Props) {
                     }
                 />
             </SkeletonWrapper>
-            <SkeletonWrapper isLoading={statsQuery.isLoading}>
+            <SkeletonWrapper isLoading={statsQuery.isFetching}>
                 <StatCard
                     formatter={formatter}
                     value={expense}
@@ -88,7 +88,7 @@ function StatCard({
     return (
         <Card className='flex h-24 w-full items-center gap-2 p-4'>
             {icon}
-            <div className="flex flex-col items-center gap-0">
+            <div className="flex flex-col items-start gap-0">
                 <p className="text-muted-foreground">{title}</p>
                 <CountUp
                     preserveValue
